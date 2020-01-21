@@ -15,10 +15,10 @@ public class ServiceProvider: NSObject, NAOSyncDelegate, NAOSensorsDelegate {
     var status: Bool
     
     // Callbacks declarations
-    static var onSynchronizationFailure:((_ error: DBNAOERRORCODE, _ message: String) -> ())?
-    static var onErrorEventWithErrorCode:((_ error: DBNAOERRORCODE, _ message: String) -> ())?
+    static public var onSynchronizationFailure:((_ message: String) -> ())?
+    static public var onErrorEventWithErrorCode:(( _ message: String) -> ())?
 
-    required init(apikey: String) {
+    required public init(apikey: String) {
         self.status = false
         self.apikey = apikey
     }
@@ -27,9 +27,9 @@ public class ServiceProvider: NSObject, NAOSyncDelegate, NAOSensorsDelegate {
         return self.apikey
     }
     
-    func start() {}
+    public func start() {}
     
-    func  stop() {}
+    public func  stop() {}
     // MARK: - NAOSensorsDelegate
     
     public func requiresWifiOn() {
@@ -60,6 +60,6 @@ public class ServiceProvider: NSObject, NAOSyncDelegate, NAOSensorsDelegate {
     }
     
     public func didSynchronizationFailure(_ errorCode: DBNAOERRORCODE, msg message: String!) {
-        ServiceProvider.onSynchronizationFailure?(errorCode, message)
+        ServiceProvider.onErrorEventWithErrorCode?("The synchronization fails! \(String(describing: message)) with error code \(errorCode)")
     }
 }

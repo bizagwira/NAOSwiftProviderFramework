@@ -13,21 +13,21 @@ public class BeaconReportingProvider: ServiceProvider, NAOBeaconReportingHandleD
     
      var beaconReportingHandler: NAOBeaconReportingHandle? = nil
     
-     required init(apikey: String) {
+     required public init(apikey: String) {
          super.init(apikey: apikey)
          
          self.beaconReportingHandler = NAOBeaconReportingHandle(key: apikey, delegate: self, sensorsDelegate: self)
          self.beaconReportingHandler?.synchronizeData(self)
      }
      
-     override func start() {
+     override public func start() {
          if (!self.status){
              self.beaconReportingHandler?.start()
          }
          self.status = true
      }
      
-     override func stop() {
+     override public func stop() {
          if (self.status){
              self.beaconReportingHandler?.stop()
          }
@@ -36,7 +36,7 @@ public class BeaconReportingProvider: ServiceProvider, NAOBeaconReportingHandleD
      
      // MARK: - NAOBeaconReportingHandleDelegate
      public func didFailWithErrorCode(_ errCode: DBNAOERRORCODE, andMessage message: String!) {
-       ServiceProvider.onErrorEventWithErrorCode?(errCode, "Beacon reporting error: \(String(describing: message))")
+       ServiceProvider.onErrorEventWithErrorCode?("BeaconReporting fail: \(String(describing: message)) with error code \(errCode)")
      }
      
      deinit {

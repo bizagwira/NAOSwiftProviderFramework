@@ -14,24 +14,24 @@ public class LocationProvider: ServiceProvider, NAOLocationHandleDelegate {
     var locationHandle: NAOLocationHandle? = nil
     
     // Callbacks declarations
-    var onLocationAvailable:((_ latitude: Float, _ longitude: Float, _ altitude: Int) -> ())?
-    var onLocationStatusChanged:((_ status: DBTNAOFIXSTATUS) -> ())?
+    public var onLocationAvailable:((_ latitude: Float, _ longitude: Float, _ altitude: Int) -> ())?
+    public var onLocationStatusChanged:((_ statusString: String) -> ())?
     
-    required init(apikey: String) {
+    required public init(apikey: String) {
         super.init(apikey: apikey)
         
         self.locationHandle = NAOLocationHandle(key: apikey, delegate: self, sensorsDelegate: self)
         self.locationHandle?.synchronizeData(self)
     }
     
-    override func start() {
+    override public func start() {
         if (!self.status){
             self.locationHandle?.start()
         }
         self.status = true
     }
     
-    override func stop() {
+    override public func stop() {
         if (self.status){
             self.locationHandle?.stop()
         }
@@ -59,11 +59,27 @@ public class LocationProvider: ServiceProvider, NAOLocationHandleDelegate {
     }
 
     public func didLocationStatusChanged(_ status: DBTNAOFIXSTATUS) {
-        onLocationStatusChanged?(status)
+        switch (status) {
+            case DBTNAOFIXSTATUS.NAO_FIX_UNAVAILABLE:
+                onLocationStatusChanged?("LOCATION STATUS: FIX_UNAVAILABLE")
+                break;
+            case DBTNAOFIXSTATUS.NAO_FIX_AVAILABLE:
+                onLocationStatusChanged?("LOCATION STATUS: UNAVAILABLE")
+                break;
+            case DBTNAOFIXSTATUS.NAO_TEMPORARY_UNAVAILABLE:
+                onLocationStatusChanged?("LOCATION STATUS: TEMPORARY_UNAVAILABLE")
+                break;
+            case DBTNAOFIXSTATUS.NAO_OUT_OF_SERVICE:
+                onLocationStatusChanged?("LOCATION STATUS: OUT_OF_SERVICE")
+                break;
+            default:
+                onLocationStatusChanged?("LOCATION STATUS: UNKNOWN")
+                break;
+        }
     }
 
     public func didFailWithErrorCode(_ errCode: DBNAOERRORCODE, andMessage message: String!) {
-        ServiceProvider.onErrorEventWithErrorCode?(errCode, message)
+        ServiceProvider.onErrorEventWithErrorCode?("NAOLocationHandle fails: \(String(describing: message)) with error code \(errCode)")
     }
 
     deinit {

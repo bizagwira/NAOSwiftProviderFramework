@@ -13,21 +13,21 @@ public class AnalyticsProvider: ServiceProvider, NAOAnalyticsHandleDelegate {
     
      var analyticHandler: NAOAnalyticsHandle? = nil
     
-     required init(apikey: String) {
+     required public init(apikey: String) {
          super.init(apikey: apikey)
          
          self.analyticHandler = NAOAnalyticsHandle(key: apikey, delegate: self, sensorsDelegate: self)
          self.analyticHandler?.synchronizeData(self)
      }
      
-     override func start() {
+     override public func start() {
          if (!self.status){
              self.analyticHandler?.start()
          }
          self.status = true
      }
      
-     override func stop() {
+     override public func stop() {
          if (self.status){
              self.analyticHandler?.stop()
          }
@@ -36,7 +36,7 @@ public class AnalyticsProvider: ServiceProvider, NAOAnalyticsHandleDelegate {
      
      // MARK: - NAOAnalyticsHandleDelegate
      public func didFailWithErrorCode(_ errCode: DBNAOERRORCODE, andMessage message: String!) {
-        ServiceProvider.onErrorEventWithErrorCode?(errCode, "Analytics' error: \(String(describing: message))")
+        ServiceProvider.onErrorEventWithErrorCode?("Analytics fail : \(String(describing: message)) with error code \(errCode)")
      }
      
      deinit {

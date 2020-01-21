@@ -15,24 +15,24 @@ class BeaconProximityProvider: ServiceProvider, NAOBeaconProximityHandleDelegate
     var beaconProximityHandler: NAOBeaconProximityHandle? = nil
     
     // Callbacks declarations
-    var onRangeBeaconEvent:((_ beaconPublicID: String, _ rssi: Int32) -> ())?
-    var onProximityChangeEvent:((_ proximity: DBTBEACONSTATE, _ beaconPublicID: String?) -> ())?
+    public var onRangeBeaconEvent:((_ beaconPublicID: String, _ rssi: Int32) -> ())?
+    public var onProximityChangeEvent:((_ proximity: DBTBEACONSTATE, _ beaconPublicID: String?) -> ())?
     
-     required init(apikey: String) {
+     required public init(apikey: String) {
          super.init(apikey: apikey)
          
          self.beaconProximityHandler = NAOBeaconProximityHandle(key: apikey, delegate: self, sensorsDelegate: self)
          self.beaconProximityHandler?.synchronizeData(self)
      }
      
-     override func start() {
+     override public func start() {
          if (!self.status){
              self.beaconProximityHandler?.start()
          }
          self.status = true
      }
      
-     override func stop() {
+     override public func stop() {
          if (self.status){
              self.beaconProximityHandler?.stop()
          }
@@ -40,15 +40,15 @@ class BeaconProximityProvider: ServiceProvider, NAOBeaconProximityHandleDelegate
      }
      
     // MARK: - NAOBeaconProximityHandleDelegate
-    func didFailWithErrorCode(_ errCode: DBNAOERRORCODE, andMessage message: String!) {
-        ServiceProvider.onErrorEventWithErrorCode?(errCode, message)
+    public func didFailWithErrorCode(_ errCode: DBNAOERRORCODE, andMessage message: String!) {
+        ServiceProvider.onErrorEventWithErrorCode?("BeaconProximity fail: \(String(describing: message)) with error code \(errCode)")
     }
 
-    func didRangeBeacon(_ beaconPublicID: String!, withRssi rssi: Int32) {
+    public func didRangeBeacon(_ beaconPublicID: String!, withRssi rssi: Int32) {
         onRangeBeaconEvent!(beaconPublicID, rssi)
     }
     
-    func didProximityChange(_ proximity: DBTBEACONSTATE, forBeacon beaconPublicID: String!) {
+    public func didProximityChange(_ proximity: DBTBEACONSTATE, forBeacon beaconPublicID: String!) {
         onProximityChangeEvent!(proximity, beaconPublicID)
     }
 

@@ -14,23 +14,23 @@ public class GeofencingHandler: ServiceProvider, NAOGeofenceHandleDelegate{
     var geofencingHandler: NAOGeofencingHandle? = nil
     
     // Callbacks declarations
-    var onAlertEventWithMessage:((_ message: String) -> ())?
+    public var onAlertEventWithMessage:((_ message: String) -> ())?
     
-    required init(apikey: String) {
+    required public init(apikey: String) {
         super.init(apikey: apikey)
         
         self.geofencingHandler = NAOGeofencingHandle(key: apikey, delegate: self, sensorsDelegate: self)
         self.geofencingHandler?.synchronizeData(self)
     }
     
-    override func start() {
+    override public func start() {
         if (!self.status){
             self.geofencingHandler?.start()
         }
         self.status = true
     }
     
-    override func stop() {
+    override public func stop() {
         if (self.status){
             self.geofencingHandler?.stop()
         }
@@ -54,7 +54,7 @@ public class GeofencingHandler: ServiceProvider, NAOGeofenceHandleDelegate{
     }
     
     public func didFailWithErrorCode(_ errCode: DBNAOERRORCODE, andMessage message: String!) {
-        ServiceProvider.onErrorEventWithErrorCode?(errCode, message)
+        ServiceProvider.onErrorEventWithErrorCode?("NAOGeofencingHandle fails: \(String(describing: message)) with error code \(errCode)")
     }
     
     deinit {

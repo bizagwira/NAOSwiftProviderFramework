@@ -9,34 +9,31 @@
 Pod::Spec.new do |s|
   s.name             = 'NAOSwiftProviderFramework'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of NAOSwiftProviderFramework.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
+  s.swift_version    = '5.0'
+  s.summary          = 'NAOSwiftProviderFramework is a bridge that allows uses to easly integrate NAOSDK into their Swift applications.'
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+NAOSwiftProviderFramework allows users to easly integrate the NAOSDK into the Swift application.
+It is a kind of bridge between the Swift application and the NAOSDK that is basically written in Objective-C.
+LocationProvider exposes the callbacks and notifications that can be used to communicate with the NAOSDK.
                        DESC
 
   s.homepage         = 'https://github.com/bizagwira/NAOSwiftProviderFramework'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'bizagwira' => 'honore.bizagwira@polestar.eu' }
   s.source           = { :git => 'https://github.com/bizagwira/NAOSwiftProviderFramework.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '10.0'
 
-  s.source_files = 'NAOSwiftProviderFramework/Classes/**/*'
+  s.source_files = 'Services/*.swift'
   
-  # s.resource_bundles = {
-  #   'NAOSwiftProviderFramework' => ['NAOSwiftProviderFramework/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.xcconfig = { 'SWIFT_INCLUDE_PATHS' => '/Users/polestar/ALL/MY_PROJECTS/NAOSwiftProviderFramework/Modules', 'LIBRARY_SEARCH_PATHS' => "/Users/polestar/ALL/MY_PROJECTS/NAOSwiftProviderFramework/Example/Pods/NAOSDK/" }
+  
+  s.static_framework = true
+  s.libraries = "c++", "z", "NAOSDK"
+  s.frameworks  = "CoreBluetooth", "CoreLocation", "CoreMotion", "SystemConfiguration"
+  s.requires_arc = true
+  
+  s.frameworks = 'UIKit', 'CoreGraphics'
+  s.dependency 'NAOSDK'
 end
