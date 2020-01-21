@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'NAOSwiftProviderFramework_Example' do
+  pod 'NAOSwiftProviderFramework', :path => '../'
+
+  target 'NAOSwiftProviderFramework_Tests' do
+    inherit! :search_paths
+
+    pod 'FBSnapshotTestCase' , '~> 2.1.4'
+  end
+end
