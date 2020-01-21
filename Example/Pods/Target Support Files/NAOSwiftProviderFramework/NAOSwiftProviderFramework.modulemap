@@ -1,0 +1,6 @@
+framework module NAOSwiftProviderFramework {
+  umbrella header "NAOSwiftProviderFramework-umbrella.h"
+
+  export *
+  module * { export * }
+}

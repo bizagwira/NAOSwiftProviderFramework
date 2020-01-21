@@ -1,0 +1,6 @@
+framework module Pods_NAOSwiftProviderFramework_Tests {
+  umbrella header "Pods-NAOSwiftProviderFramework_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
